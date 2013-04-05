@@ -1122,6 +1122,18 @@ struct intel_gen6_power_mgmt {
 	bool interrupts_enabled;
 	u32 pm_iir;
 
+	/* lock - irqsave spinlock that protectects the work_struct and
+	 * pm_iir. */
+	spinlock_t lock;
+
+	/* The below variables an all the rps hw state are protected by
+	 * dev->struct mutext. */
+	u8 cur_delay;
+	u8 min_delay;
+	u8 max_delay;
+	u8 hw_max;
+
+
 	/* Frequencies are stored in potentially platform dependent multiples.
 	 * In other words, *_freq needs to be multiplied by X to be interesting.
 	 * Soft limits are those which are used for the dynamic reclocking done

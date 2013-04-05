@@ -1265,6 +1265,7 @@ static int i915_frequency_info(struct seq_file *m, void *unused)
 			    rp_state_cap >> 0) & 0xff;
 		max_freq *= (IS_SKYLAKE(dev) ? GEN9_FREQ_SCALER : 1);
 		seq_printf(m, "Max non-overclocked (RP0) frequency: %dMHz\n",
+
 			   intel_gpu_freq(dev_priv, max_freq));
 		seq_printf(m, "Max overclocked frequency: %dMHz\n",
 			   intel_gpu_freq(dev_priv, dev_priv->rps.max_freq));
@@ -1308,6 +1309,12 @@ static int i915_frequency_info(struct seq_file *m, void *unused)
 			   "efficient (RPe) frequency: %d MHz\n",
 			   intel_gpu_freq(dev_priv, dev_priv->rps.efficient_freq));
 		mutex_unlock(&dev_priv->rps.hw_lock);
+
+			   max_freq * GT_FREQUENCY_MULTIPLIER);
+
+		seq_printf(m, "Max overclocked frequency: %dMHz\n",
+			   dev_priv->rps.hw_max * GT_FREQUENCY_MULTIPLIER);
+
 	} else {
 		seq_puts(m, "no P-state info available\n");
 	}
