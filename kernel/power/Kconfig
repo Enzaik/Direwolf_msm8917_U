@@ -27,6 +27,7 @@ config WAKELOCK
 
 	  Say Y if you are running an android userspace.
 
+
 config POWERSUSPEND
 	bool "Power suspend"
 	default y
