@@ -2698,7 +2698,7 @@ static int read_beat(struct fg_chip *chip, u8 *beat_count)
 // Read the beat count and write it into the beat_count arg;
 // return non-zero on failure.
 
-int read_beat(struct fg_chip *chip, u8 *beat_count)
+static int read_beat(struct fg_chip *chip, u8 *beat_count)
 
 {
 	int rc = fg_read(chip, beat_count,
