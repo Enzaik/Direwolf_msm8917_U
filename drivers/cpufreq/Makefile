@@ -19,7 +19,10 @@ obj-$(CONFIG_CPU_FREQ_GOV_ELECTRON)	+= cpufreq_electron.o
 
 
 # CPU Input Boost
-obj-$(CONFIG_CPU_INPUT_BOOST)		+= cpu_input_boost.o
+obj-$(CONFIG_CPU_INPUT_BOOST)		+= cpu_boost.o
+ifeq ($(CONFIG_CPU_INPUT_BOOST),y)
+cpu_boost-objs				:= cpu_input_boost.o
+endif
 
 
 obj-$(CONFIG_CPUFREQ_DT)		+= cpufreq-dt.o
