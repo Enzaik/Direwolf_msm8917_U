@@ -175,6 +175,7 @@ res="${res}${CONFIG_LOCALVERSION}${LOCALVERSION}"
 if test "$CONFIG_LOCALVERSION_AUTO" = "y"; then
 	# full scm version string
 	res="$res$(scm_version)"
+<<<<<<< HEAD
 else
 	# append a plus sign if the repository is not in a clean
 	# annotated or signed tagged state (as git describe only
@@ -184,6 +185,9 @@ else
 		scm=$(scm_version --short)
 		res="$res${scm:++}"
 	fi
+=======
+
+>>>>>>> 2035663a532f... more optimizations - thanks HardcoreKernel :)
 fi
 
 echo "$res"
