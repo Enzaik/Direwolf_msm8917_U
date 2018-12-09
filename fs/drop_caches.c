@@ -83,7 +83,7 @@ int drop_caches_sysctl_handler(struct ctl_table *table, int write,
 	return 0;
 }
 
-#ifdef CONFIG_POWERSUSPEND 
+#ifdef CONFIG_POWERSUSPEND
 static void drop_caches_suspend(struct work_struct *work);
 static DECLARE_WORK(drop_caches_suspend_work, drop_caches_suspend);
 
@@ -98,7 +98,7 @@ static void drop_caches_suspend(struct work_struct *work)
         drop_slab();
 }
 
-static void __ref drop_caches_power_suspend(struct power_suspend *handler) 
+static void __ref drop_caches_power_suspend(struct power_suspend *handler)
 {
 			schedule_work_on(0, &drop_caches_suspend_work);
 }
@@ -109,7 +109,8 @@ static struct power_suspend drop_caches_power_suspend_driver = {
 
 static int __init drop_caches_init(void)
 {
- 	register_power_suspend(&drop_caches_power_suspend_driver); 
+	register_power_suspend(&drop_caches_power_suspend_driver);
 	return 0;
 }
 late_initcall(drop_caches_init);
+#endif
