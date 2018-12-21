@@ -5252,10 +5252,11 @@ int msm_thermal_init(struct msm_thermal_data *pdata)
 
 	register_reboot_notifier(&msm_thermal_reboot_notifier);
 	pm_notifier(msm_thermal_suspend_callback, 0);
-	INIT_DEFERRABLE_WORK(&retry_hotplug_work, retry_hotplug);
-	INIT_DEFERRABLE_WORK(&check_temp_work, check_temp);
-	mod_delayed_work(system_freezable_power_efficient_wq,
-		&check_temp_work, 0);
+
+	INIT_DELAYED_WORK(&retry_hotplug_work, retry_hotplug);
+	INIT_DELAYED_WORK(&check_temp_work, check_temp);
+	schedule_delayed_work(&check_temp_work, msecs_to_jiffies(10000));
+
 
 	if (num_possible_cpus() > 1) {
 		cpus_previously_online_update();
