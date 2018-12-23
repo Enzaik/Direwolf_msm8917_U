@@ -250,84 +250,71 @@ static int sdev_runtime_suspend(struct device *dev)
 	struct scsi_device *sdev = to_scsi_device(dev);
 	int err = 0;
 
-
-	if (!sdev->request_queue->dev) {
-		err = scsi_dev_type_suspend(dev, do_scsi_runtime_suspend);
-		if (err == -EAGAIN)
-			pm_schedule_suspend(dev, jiffies_to_msecs(
-					round_jiffies_up_relative(HZ/10)));
+if (!sdev->request_queue->dev) {
+ 		err = scsi_dev_type_suspend(dev, do_scsi_runtime_suspend);
+ 		if (err == -EAGAIN)
+ 			pm_schedule_suspend(dev, jiffies_to_msecs(
+ 					round_jiffies_up_relative(HZ/10)));
 		return err;
 	}
-
-	if (pm && pm->runtime_suspend) {
-		err = blk_pre_runtime_suspend(sdev->request_queue);
-		if (err)
-			return err;
 
 	err = blk_pre_runtime_suspend(sdev->request_queue);
 	if (err)
 		return err;
 	if (pm && pm->runtime_suspend)
-
 		err = pm->runtime_suspend(dev);
+
 	blk_post_runtime_suspend(sdev->request_queue, err);
-
 	return err;
 }
-
-static int scsi_runtime_suspend(struct device *dev)
-{
-	int err = 0;
-
-	dev_dbg(dev, "scsi_runtime_suspend\n");
-	if (scsi_is_sdev_device(dev))
-		err = sdev_runtime_suspend(dev);
-
-	/* Insert hooks here for targets, hosts, and transport classes */
-
-	return err;
-}
-
-static int sdev_runtime_resume(struct device *dev)
-{
-	struct scsi_device *sdev = to_scsi_device(dev);
-	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
-	int err = 0;
-
-
+ static int scsi_runtime_suspend(struct device *dev)
+ {
+ 	int err = 0;
+ 
+ 	dev_dbg(dev, "scsi_runtime_suspend\n");
+ 	if (scsi_is_sdev_device(dev))
+ 		err = sdev_runtime_suspend(dev);
+ 
+ 	/* Insert hooks here for targets, hosts, and transport classes */
+ 
+ 	return err;
+ }
+ 
+ static int sdev_runtime_resume(struct device *dev)
+ {
+ 	struct scsi_device *sdev = to_scsi_device(dev);
+ 	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
+ 	int err = 0;
+ 
 	if (!sdev->request_queue->dev)
 		return scsi_dev_type_resume(dev, do_scsi_runtime_resume);
 
-	if (pm && pm->runtime_resume) {
-		blk_pre_runtime_resume(sdev->request_queue);
-
-	blk_pre_runtime_resume(sdev->request_queue);
+    blk_pre_runtime_resume(sdev->request_queue);
 	if (pm && pm->runtime_resume)
-
 		err = pm->runtime_resume(dev);
 	blk_post_runtime_resume(sdev->request_queue, err);
 
 	return err;
 }
 
-static int scsi_runtime_resume(struct device *dev)
-{
-	int err = 0;
-
-	dev_dbg(dev, "scsi_runtime_resume\n");
-	if (scsi_is_sdev_device(dev))
-		err = sdev_runtime_resume(dev);
-
-	/* Insert hooks here for targets, hosts, and transport classes */
-
-	return err;
-}
-
-static int scsi_runtime_idle(struct device *dev)
-{
-	dev_dbg(dev, "scsi_runtime_idle\n");
-
-	/* Insert hooks here for targets, hosts, and transport classes */
+ static int scsi_runtime_resume(struct device *dev)
+ {
+ 	int err = 0;
+ 
+ 	dev_dbg(dev, "scsi_runtime_resume\n");
+ 	if (scsi_is_sdev_device(dev))
+ 		err = sdev_runtime_resume(dev);
+ 
+ 	/* Insert hooks here for targets, hosts, and transport classes */
+ 
+ 	return err;
+ }
+ 
+ static int scsi_runtime_idle(struct device *dev)
+ {
+ 	dev_dbg(dev, "scsi_runtime_idle\n");
+ 
+/* Insert hooks here for targets, hosts, and transport classes */
 
 	if (scsi_is_sdev_device(dev)) {
 		pm_runtime_mark_last_busy(dev);
